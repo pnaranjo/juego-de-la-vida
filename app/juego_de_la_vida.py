@@ -95,7 +95,7 @@ def checkLife(actualTable ,futureTable , container , rows, cols):
 
 
 def printLine():
-    print("----------------------------------------------------------------------------")
+    print('----' * 10)
 
 def paintTable(actualTable , rows , columns):
 
@@ -103,14 +103,14 @@ def paintTable(actualTable , rows , columns):
         for col in range(columns):
 
             if actualTable[row][col] == 1:
-                print ("| O " , end='')
+                print ("|* " , end='')
 
             else:
-                print ("|   "  , end='')
+                print ("|- "  , end='')
 
             if col == columns -1: print('')
+    printLine()
 
-        printLine()
 
 
 
