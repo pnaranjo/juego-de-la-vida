@@ -12,7 +12,7 @@ menu['04']="Avance automatico"
 menu['05']="Salir del sistema"
 
 
-while True:
+while false:
     try:
         os.system('clear')
         for k in sorted(menu):
