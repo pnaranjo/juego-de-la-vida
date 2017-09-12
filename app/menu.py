@@ -3,6 +3,9 @@
 
 from juego_de_la_vida import game, prepare_game
 import os
+import time
+from random import shuffle
+from combination import combinations
 
 menu = {}
 menu['01']="Patron random"
@@ -22,13 +25,17 @@ while True:
 
         if selection == '1' or selection == '01':
              rows, columns = prepare_game()
-             game(rows, columns)
+             cells = int(input("Numero de celulas vivas: "))
+             table = [(x,y) for x in range(rows) for y in range(columns)]
+             shuffle(table)
+             patron = (table[:cells])
+             game(rows, columns, patron)
         elif selection == '2' or selection == '02':
              rows, columns = prepare_game()
              cells = int(input("Numero de celulas vivas: "))
              patron = []
              for i in range(cells):
-                patron.append({int(input("numero de fila: ")): int(input("numero de columna: "))})
+                patron.append((int(input("numero de fila: ")), int(input("numero de columna: "))))
              game(rows, columns, patron)
         elif selection == '3' or selection == '03':
              pass
@@ -40,6 +47,8 @@ while True:
             print(40 * '-')
             print ("Opcion invalida")
             print(40 * '-')
+            time.sleep(1)
+
     except (EOFError, KeyboardInterrupt):
             print(40 * '-')
             print ("Para Salir elija la opcion 05")
