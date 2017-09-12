@@ -7,8 +7,7 @@ def prepare_game():
     columns = input("Introduce la cantidad de columnas que deseas:")
     return int(rows), int(columns)
 
-def game():
-    rows, columns = prepare_game()
+def game(rows, columns, patron=None):
 
     container = [
                  [0,0,0],
@@ -19,7 +18,7 @@ def game():
     actualTable = []
     futureTable = []
 
-    loadActualTable(actualTable,rows,columns)
+    loadActualTable(actualTable,rows,columns, patron)
     loadFutureTable(futureTable,rows,columns)
 
     checkLife(actualTable, futureTable, container, rows, columns)
@@ -90,7 +89,7 @@ def checkLife(actualTable ,futureTable , container , rows, cols):
         os.system('clear')
         paintTable(futureTable, rows , cols)
         resetTable(futureTable, rows , cols)
-        time.sleep(.4)
+        time.sleep(1)
 
 
 
@@ -115,7 +114,7 @@ def paintTable(actualTable , rows , columns):
 
 
 
-def loadActualTable(actualTable , rows , columns):
+def loadActualTable(actualTable , rows , columns, patronArray=None):
 
     for row in range(rows):
         for col in range(columns):
@@ -126,13 +125,19 @@ def loadActualTable(actualTable , rows , columns):
 
             actualTable.append(newArray)
 
+    if patronArray:
+        for i in patronArray:
+            row=next(iter(i))
+            col=i[row]
+            actualTable[row][col] = 1
 
-    for row in range(rows):
-        for col in range(columns):
-            value = random.randint(0,1)
+    else:
+        for row in range(rows):
+            for col in range(columns):
+                value = random.randint(0,1)
 
-            if value == 1:
-                actualTable[row][col] = 1
+                if value == 1:
+                    actualTable[row][col] = 1
 
 
 def loadFutureTable(futureTable , rows , columns):
@@ -159,4 +164,4 @@ def resetTable(table , rows , cols):
 
 
 # Call game
-game()
+#game()

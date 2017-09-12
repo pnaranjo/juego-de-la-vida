@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 # Version 1.0
 
+from juego_de_la_vida import game, prepare_game
 import os
 
 menu = {}
@@ -20,9 +21,15 @@ while True:
         selection = input("Elija un opción: ")
 
         if selection == '1' or selection == '01':
-             pass
+             rows, columns = prepare_game()
+             game(rows, columns)
         elif selection == '2' or selection == '02':
-             pass
+             rows, columns = prepare_game()
+             cells = int(input("Numero de celulas vivas: "))
+             patron = []
+             for i in range(cells):
+                patron.append({int(input("numero de fila: ")): int(input("numero de columna: "))})
+             game(rows, columns, patron)
         elif selection == '3' or selection == '03':
              pass
         elif selection == '4' or selection == '04':
