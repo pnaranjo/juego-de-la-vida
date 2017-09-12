@@ -1,10 +1,14 @@
 import random
 import os
 import time
+from controles import matriz_minima
 
 def prepare_game():
-    rows = input("Introduce la cantidad de filas que deseas:")
-    columns = input("Introduce la cantidad de columnas que deseas:")
+    while True:
+        rows = input("Introduce la cantidad de filas que deseas:")
+        columns = input("Introduce la cantidad de columnas que deseas:")
+        if matriz_minima(rows,columns):
+            break
     return int(rows), int(columns)
 
 def game(rows, columns, patron=None):

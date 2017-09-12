@@ -2,6 +2,7 @@
 # Version 1.0
 
 from juego_de_la_vida import game, prepare_game
+from controles import cells_max_matriz
 import os
 
 menu = {}
@@ -20,20 +21,33 @@ while True:
         print()
         selection = input("Elija un opción: ")
 
+        #Patron random
         if selection == '1' or selection == '01':
              rows, columns = prepare_game()
              game(rows, columns)
+
+        #Seleccion ubicacion de celdas
         elif selection == '2' or selection == '02':
              rows, columns = prepare_game()
              cells = int(input("Numero de celulas vivas: "))
-             patron = []
-             for i in range(cells):
-                patron.append({int(input("numero de fila: ")): int(input("numero de columna: "))})
-             game(rows, columns, patron)
+             if cells_max_matriz(cells, rows, columns):
+                 pass
+             else:
+                 patron = []
+                 for i in range(cells):
+                    patron.append({int(input("numero de fila: ")): int(input("numero de columna: "))})
+                    #print como va quedando la matriz
+                 game(rows, columns, patron)
+
+        #Opcion 3
         elif selection == '3' or selection == '03':
-             pass
+             passcells_max_matriz
+
+        #opcion 4
         elif selection == '4' or selection == '04':
              pass
+
+        #Salir
         elif selection == '5' or selection == '05':
              break
         else:
