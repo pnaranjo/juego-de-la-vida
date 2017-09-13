@@ -14,3 +14,14 @@ def cells_max_matriz(cells, rows, columns):
         return True
     else:
         return False
+
+def control_ubicacion_disponible(row, column, patron):
+    try:
+        if patron[row][column] == 1:
+            print('\n***** Ubicacion invalida *****\n')
+            return False
+        else:
+            return True
+    except IndexError:
+        print('\n***** Ubicacion invalida *****\n')
+        return False
