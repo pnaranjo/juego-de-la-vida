@@ -5,6 +5,6 @@ Autores:
 	- Pablo Naranjo
 	- Liber Rossetti
 
-Docu by Rodrigo Campos
-Coder: Rodrigo Campos
-Test: Rodrigo Campos
+Docu by Team
+Coders: Team
+Test:   Team
