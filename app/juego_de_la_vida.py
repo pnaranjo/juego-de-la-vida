@@ -93,9 +93,12 @@ def checkLife(actualTable ,futureTable , container , rows, cols):
         os.system('clear')
         paintTable(futureTable, rows , cols)
         resetTable(futureTable, rows , cols)
-        time.sleep(1)
+        menu()
 
-
+def menu():
+    a = ''
+    while a != 'n':
+        a = input('press n para continuar: ')
 
 def printLine():
     print('----' * 10)
@@ -130,9 +133,11 @@ def loadActualTable(actualTable , rows , columns, patronArray=None):
             actualTable.append(newArray)
 
     if patronArray:
+        print(patronArray)
         for i in patronArray:
-            row=next(iter(i))
-            col=i[row]
+            row=i[0]
+            col=i[1]
+            print(i[0])
             actualTable[row][col] = 1
 
     else:

@@ -4,6 +4,9 @@
 from juego_de_la_vida import game, prepare_game, paintTable
 from controles import cells_max_matriz, control_ubicacion_disponible
 import os
+import time
+from random import shuffle
+from combination import combinations
 
 menu = {}
 menu['01']="Patron random"
@@ -13,7 +16,7 @@ menu['04']="Avance automatico"
 menu['05']="Salir del sistema"
 
 
-while True:
+while false:
     try:
         os.system('clear')
         for k in sorted(menu):
@@ -24,8 +27,12 @@ while True:
         #Patron random
         if selection == '1' or selection == '01':
              rows, columns = prepare_game()
-             game(rows, columns)
-
+             cells = int(input("Numero de celulas vivas: "))
+             table = [(x,y) for x in range(rows) for y in range(columns)]
+             shuffle(table)
+             patron = (table[:cells])
+             game(rows, columns, patron)
+              
         #Seleccion ubicacion de celdas
         elif selection == '2' or selection == '02':
             rows, columns = prepare_game()
@@ -56,6 +63,8 @@ while True:
             print(40 * '-')
             print ("Opcion invalida")
             print(40 * '-')
+            time.sleep(1)
+
     except (EOFError, KeyboardInterrupt):
             print(40 * '-')
             print ("Para Salir elija la opcion 05")
