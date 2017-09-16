@@ -16,7 +16,7 @@ menu['04']="Avance automatico"
 menu['05']="Salir del sistema"
 
 
-while false:
+while True:
     try:
         os.system('clear')
         for k in sorted(menu):
@@ -32,7 +32,7 @@ while false:
              shuffle(table)
              patron = (table[:cells])
              game(rows, columns, patron)
-              
+
         #Seleccion ubicacion de celdas
         elif selection == '2' or selection == '02':
             rows, columns = prepare_game()
