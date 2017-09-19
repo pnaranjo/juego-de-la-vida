@@ -27,11 +27,6 @@ class ControlesTests(unittest.TestCase):
         patron = [[0 for x in range(3)] for y in range(3)]
         self.assertFalse(control_ubicacion_disponible(5, 5, patron), 'False')
 
-
-
-
-
-
 def main():
     unittest.main()
 

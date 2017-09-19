@@ -1,4 +1,5 @@
-
+#!/usr/bin/python3
+# Version 1.0
 
 def matriz_minima(rows, columns):
     if (int(rows) >= 3 and int(columns) >= 3):
