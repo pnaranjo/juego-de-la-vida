@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import unittest
-from .. import controles
+from app.controles import controles
 
 
 class ControlesTests(unittest.TestCase):
@@ -26,7 +26,7 @@ class ControlesTests(unittest.TestCase):
     def test_ubicacion_disponible_fuera_de_limite(self):
         patron = [[0 for x in range(3)] for y in range(3)]
         self.assertFalse(control_ubicacion_disponible(5, 5, patron), 'False')
-
+        
 def main():
     unittest.main()
 
