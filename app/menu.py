@@ -13,6 +13,7 @@ class menu(object):
         self.control = controles()
         self.juego = juego_de_la_vida()
 
+
     def mostrar_menu(self):
         menu = {}
         menu['01'] = "Patron random"
@@ -20,7 +21,6 @@ class menu(object):
         menu['03'] = "Avanzar paso a paso"
         menu['04'] = "Avance automatico"
         menu['05'] = "Salir del sistema"
-
 
         while True:
             try:
