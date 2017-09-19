@@ -72,9 +72,11 @@ class menu(object):
                     time.sleep(1)
 
             except (EOFError, KeyboardInterrupt):
+                    print(' ')
                     print(40 * '-')
                     print ("Para Salir elija la opcion 05")
                     print(40 * '-')
+                    time.sleep(1)
 
 
 
