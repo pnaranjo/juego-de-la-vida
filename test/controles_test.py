@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import unittest
-from app.controles import controles
+from .. import controles
 
 
 class ControlesTests(unittest.TestCase):
