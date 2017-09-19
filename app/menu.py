@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 # Version 1.0
 
-from juego_de_la_vida import juego_de_la_vida
-from controles import controles
+from app.juego_de_la_vida import juego_de_la_vida
+from app.controles import controles
 import os
 import time
 from random import shuffle

@@ -1,6 +1,6 @@
 import random
 import os
-from controles import controles
+from app.controles import controles
 
 class juego_de_la_vida(object):
 
