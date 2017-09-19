@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 import unittest
 from app.controles import controles
 
@@ -27,8 +26,8 @@ class ControlesTests(unittest.TestCase):
         patron = [[0 for x in range(3)] for y in range(3)]
         self.assertFalse(controles.control_ubicacion_disponible(5, 5, patron), 'False')
 
-def main():
-    unittest.main()
+    def ControlesTests(self):
+        unittest.main()
 
 if __name__ == '__main__':
-    main()
+    ControlesTests()
