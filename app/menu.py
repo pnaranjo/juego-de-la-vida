@@ -4,6 +4,7 @@
 from juego_de_la_vida import juego_de_la_vida
 from controles import controles
 import os
+import pickle
 import time
 from random import shuffle
 
@@ -12,15 +13,17 @@ class menu(object):
     def __init__(self):
         self.control = controles()
         self.juego = juego_de_la_vida()
+        self.mostrar_menu()
 
 
     def mostrar_menu(self):
         menu = {}
         menu['01'] = "Patron random"
-        menu['02'] = "Selecciar ubicacion inicial"
-        menu['03'] = "Avanzar paso a paso"
-        menu['04'] = "Avance automatico"
-        menu['05'] = "Salir del sistema"
+        menu['02'] = "Patron específico"
+        menu['03'] = "Vidas Estaticas"
+        menu['04'] = "Guardar juego"
+        menu['05'] = "Cargar juego"
+        menu['06'] = "Salir del sistema"
 
         while True:
             try:
@@ -37,7 +40,7 @@ class menu(object):
                     table = [(x, y) for x in range(rows) for y in range(columns)]
                     shuffle(table)
                     patron = (table[:cells])
-                    self.game(rows, columns, patron)
+                    self.juego.game(rows, columns, patron)
 
                 # Seleccion ubicacion de celdas
                 elif selection == '2' or selection == '02':
@@ -51,7 +54,7 @@ class menu(object):
                             # controlar vivas repetidas y que no se salga de rango
                             if self.control.control_ubicacion_disponible(row, column, patron):
                                 patron[row][column] = 1
-                                self.paintTable(patron , rows , columns)  # print como va quedando la matriz
+                                self.juego.paintTable(patron , rows , columns)  # print como va quedando la matriz
                                 count = count + 1
                         self.game(rows, columns, patron)
 
@@ -60,7 +63,9 @@ class menu(object):
                     pass
                 # opcion 4
                 elif selection == '4' or selection == '04':
-                    pass
+                    tablero = self.juego.actualTable()
+                    archivo = input('ingrese el nombre del archivo: ')
+                    pickle.dump(tablero, open(archivo,'wb'))
 
                 # Salir
                 elif selection == '5' or selection == '05':
@@ -82,4 +87,4 @@ class menu(object):
 
 if __name__ == '__main__':
     print("Iniciando juego..")
-    menu().mostrar_menu()
+    menu()

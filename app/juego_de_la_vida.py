@@ -16,7 +16,7 @@ class juego_de_la_vida(object):
                 break
         return int(rows), int(columns)
 
-    def game(self,rows, columns, patron=None):
+    def game(self, rows, columns, patron=None):
 
         container = [
                      [0,0,0],
@@ -98,12 +98,51 @@ class juego_de_la_vida(object):
             os.system('clear')
             self.paintTable(futureTable, rows , cols)
             self.resetTable(futureTable, rows , cols)
-            self.menu()
+            if not self.menu_secundario(actualTable):
+                break
 
-    def menu(self):
-        a = ''
-        while a != 'n':
-            a = input('press n para continuar: ')
+
+    def menu_secundario(self, actualTable):
+        print ('*' * 40 )
+        print ('- Presiona "n" para pasar al siguiente paso')
+        print ('- Presiona "m" para modificar una celda')
+        print ('- Presiona "f" para ejecutar hasta encontrar un patron estatico o oscilador')
+        print ('- Preciona "Ctrl + C" para volver al menu principal')
+        print ('*' * 40 )
+        
+        try:
+            a = input('Elige una opcion: ')
+
+            if a == "n":
+                pass
+
+            elif a == "m":
+                #TODO: poner control
+                col = int(input('ingrese columna a modificar: '))
+                row = int(input('ingrese fila a modificar: '))
+                self.modify_cel(actualTable, row, col)
+
+
+            elif a == "f":
+                #TODO: patron estatico o oscilador
+                pass
+
+            else:
+                print("opcion no valida")
+                self.menu_secundario()
+
+            return True
+        except (EOFError, KeyboardInterrupt):
+            return False
+
+
+
+    def modify_cel(self, tabla, row, col):
+        if tabla[row][col] == 1:
+            tabla[row][col] = 0
+        else:
+            tabla[row][col] = 1
+
 
     def printLine(self):
         print('----' * 10)
