@@ -1,3 +1,0 @@
-'''
-para iniciar Tests
-'''

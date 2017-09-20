@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # Version 1.0
 
 from juego_de_la_vida import juego_de_la_vida
@@ -18,12 +18,12 @@ class menu(object):
 
     def mostrar_menu(self):
         menu = {}
-        menu['01'] = "Patron random"
-        menu['02'] = "Patron específico"
-        menu['03'] = "Vidas Estaticas"
-        menu['04'] = "Guardar juego"
-        menu['05'] = "Cargar juego"
-        menu['06'] = "Salir del sistema"
+        menu['01'] = 'Patron random'
+        menu['02'] = 'Patron específico'
+        menu['03'] = 'Vidas Estaticas'
+        menu['04'] = 'Guardar juego'
+        menu['05'] = 'Cargar juego'
+        menu['06'] = 'Salir del sistema'
 
         while True:
             try:
@@ -31,12 +31,12 @@ class menu(object):
                 for k in sorted(menu):
                     print (str(k) + ' ' + menu[k])
                 print()
-                selection = input("Elija un opción: ")
+                selection = input('Elija un opción: ')
 
                 # Patron random
                 if selection == '1' or selection == '01':
                     rows, columns = self.juego.prepare_game()
-                    cells = int(input("Numero de celulas vivas: "))
+                    cells = int(input('Numero de celulas vivas: '))
                     table = [(x, y) for x in range(rows) for y in range(columns)]
                     shuffle(table)
                     patron = (table[:cells])
@@ -45,7 +45,7 @@ class menu(object):
                 # Seleccion ubicacion de celdas
                 elif selection == '2' or selection == '02':
                     rows, columns = self.prepare_game()
-                    cells = int(input("Numero de celulas vivas: "))
+                    cells = int(input('Numero de celulas vivas: '))
                     if not self.control.cells_max_matriz(cells, rows, columns):
                         patron = [[0 for x in range(rows)] for y in range(columns)]
                         count = 0
@@ -72,19 +72,19 @@ class menu(object):
                     break
                 else:
                     print(40 * '-')
-                    print ("Opcion invalida")
+                    print ('Opcion invalida')
                     print(40 * '-')
                     time.sleep(1)
 
             except (EOFError, KeyboardInterrupt):
                     print(' ')
                     print(40 * '-')
-                    print ("Para Salir elija la opcion 05")
+                    print ('Para Salir elija la opcion 05')
                     print(40 * '-')
                     time.sleep(1)
 
 
 
 if __name__ == '__main__':
-    print("Iniciando juego..")
+    print('Iniciando juego..')
     menu()

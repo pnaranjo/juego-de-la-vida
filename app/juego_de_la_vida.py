@@ -109,7 +109,7 @@ class juego_de_la_vida(object):
         print ('- Presiona "f" para ejecutar hasta encontrar un patron estatico o oscilador')
         print ('- Preciona "Ctrl + C" para volver al menu principal')
         print ('*' * 40 )
-        
+
         try:
             a = input('Elige una opcion: ')
 
