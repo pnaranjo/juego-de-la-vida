@@ -63,7 +63,8 @@ class menu(object):
                     pass
                 # opcion 4
                 elif selection == '4' or selection == '04':
-                    tablero = self.juego.actualTable()
+                    print(self.juego.futureTable)
+                    tablero = self.juego.futureTable
                     archivo = input('ingrese el nombre del archivo: ')
                     pickle.dump(tablero, open(archivo,'wb'))
 

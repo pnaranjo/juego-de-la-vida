@@ -1,12 +1,18 @@
 import random
 import os
+import time
 from controles import controles
 
 class juego_de_la_vida(object):
 
 
-    def __init__(self):
+    def __init__(self, actualTable=[]):
         self.control = controles()
+        self.actualTable = []
+        self.futureTable = []
+        self.modo_f = False
+        self.finished = False
+
 
     def prepare_game(self):
         while True:
@@ -24,14 +30,9 @@ class juego_de_la_vida(object):
                      [0,0,0]
                     ]
 
-        actualTable = []
-        futureTable = []
-
-        self.loadActualTable(actualTable,rows,columns, patron)
-        self.loadFutureTable(futureTable,rows,columns)
-
-        self.checkLife(actualTable, futureTable, container, rows, columns)
-
+        self.loadActualTable(self.actualTable,rows,columns, patron)
+        self.loadFutureTable(self.futureTable,rows,columns)
+        self.checkLife(self.actualTable, self.futureTable, container, rows, columns)
 
     def checkLife(self,actualTable ,futureTable , container , rows, cols):
 
@@ -40,17 +41,17 @@ class juego_de_la_vida(object):
             for row in range(rows -2):
                 for col in range(cols -2):
 
-                    cell1 = actualTable[row][col]
-                    cell2 = actualTable[row][col + 1]
-                    cell3 = actualTable[row][col + 2]
+                    cell1 = self.actualTable[row][col]
+                    cell2 = self.actualTable[row][col + 1]
+                    cell3 = self.actualTable[row][col + 2]
 
-                    cell4 = actualTable[row + 1][col]
-                    cell5 = actualTable[row + 1][col + 1]
-                    cell6 = actualTable[row + 1][col + 2]
+                    cell4 = self.actualTable[row + 1][col]
+                    cell5 = self.actualTable[row + 1][col + 1]
+                    cell6 = self.actualTable[row + 1][col + 2]
 
-                    cell7 = actualTable[row + 2][col]
-                    cell8 = actualTable[row + 2][col + 1]
-                    cell9 = actualTable[row + 2][col + 2]
+                    cell7 = self.actualTable[row + 2][col]
+                    cell8 = self.actualTable[row + 2][col + 1]
+                    cell9 = self.actualTable[row + 2][col + 2]
 
 
                     container[0][0] = cell1
@@ -76,33 +77,36 @@ class juego_de_la_vida(object):
 
 
                     if cellCounter < 2 and container[1][1] == 1:
-                        futureTable[row + 1][col + 1] = 0
+                        self.futureTable[row + 1][col + 1] = 0
 
                     elif cellCounter > 3 and container[1][1] == 1:
-                        futureTable[row + 1][col + 1] = 0
+                        self.futureTable[row + 1][col + 1] = 0
 
                     elif cellCounter == 3 and container[1][1] == 0:
-                        futureTable[row + 1][col + 1] = 1
+                        self.futureTable[row + 1][col + 1] = 1
 
                     elif cellCounter == 3 and container[1][1] == 1:
-                        futureTable[row + 1][col + 1] = 1
+                        self.futureTable[row + 1][col + 1] = 1
 
                     elif cellCounter == 2:
-                        futureTable[row +1][col + 1] = actualTable[row +1][col +1]
+                        self.futureTable[row +1][col + 1] = self.actualTable[row +1][col +1]
 
 
-            auxiliarTable = actualTable
-            actualTable = futureTable
-            futureTable = auxiliarTable
+            auxiliarTable = self.actualTable
+            self.actualTable = self.futureTable
+            self.futureTable = auxiliarTable
 
             os.system('clear')
-            self.paintTable(futureTable, rows , cols)
-            self.resetTable(futureTable, rows , cols)
-            if not self.menu_secundario(actualTable):
-                break
+            self.paintTable(self.futureTable, rows , cols)
+            if not self.modo_f:
+                self.menu_secundario(self.futureTable)
+                if self.finished: break
+            else: time.sleep(1)
+            self.resetTable(self.futureTable, rows , cols)
 
 
-    def menu_secundario(self, actualTable):
+
+    def menu_secundario(self, table):
         print ('*' * 40 )
         print ('- Presiona "n" para pasar al siguiente paso')
         print ('- Presiona "m" para modificar una celda')
@@ -111,6 +115,7 @@ class juego_de_la_vida(object):
         print ('*' * 40 )
 
         try:
+            print(table)
             a = input('Elige una opcion: ')
 
             if a == "n":
@@ -120,20 +125,20 @@ class juego_de_la_vida(object):
                 #TODO: poner control
                 col = int(input('ingrese columna a modificar: '))
                 row = int(input('ingrese fila a modificar: '))
-                self.modify_cel(actualTable, row, col)
+                self.modify_cel(table, row, col)
 
 
             elif a == "f":
-                #TODO: patron estatico o oscilador
-                pass
+                self.modo_f = True
+
 
             else:
                 print("opcion no valida")
-                self.menu_secundario()
+                self.menu_secundario(table)
 
-            return True
         except (EOFError, KeyboardInterrupt):
-            return False
+            self.finished = True
+            print(self.futureTable)
 
 
 
@@ -173,15 +178,12 @@ class juego_de_la_vida(object):
                 newArray = []
                 for zeroValue in range(columns):
                     newArray.append(0)
-
-                actualTable.append(newArray)
+            actualTable.append(newArray)
 
         if patronArray:
-            print(patronArray)
             for i in patronArray:
                 row=i[0]
                 col=i[1]
-                print(i[0])
                 actualTable[row][col] = 1
 
         else:
