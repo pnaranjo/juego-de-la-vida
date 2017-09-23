@@ -30,21 +30,24 @@ class menu(object):
                 os.system('clear')
                 for k in sorted(menu):
                     print (str(k) + ' ' + menu[k])
-                print()
-                selection = input('Elija un opción: ')
+                print(self.juego.started)
+                if self.juego.started or not self.juego.modo: selection = input('Elija un opción: ')
 
                 # Patron random
                 if selection == '1' or selection == '01':
+                    self.juego.modo = 1
                     rows, columns = self.juego.prepare_game()
                     cells = int(input('Numero de celulas vivas: '))
                     table = [(x, y) for x in range(rows) for y in range(columns)]
                     shuffle(table)
                     patron = (table[:cells])
+                    print(patron)
                     self.juego.game(rows, columns, patron)
 
                 # Seleccion ubicacion de celdas
                 elif selection == '2' or selection == '02':
-                    rows, columns = self.prepare_game()
+                    self.juego.modo = 2
+                    rows, columns = self.juego.prepare_game()
                     cells = int(input('Numero de celulas vivas: '))
                     if not self.control.cells_max_matriz(cells, rows, columns):
                         patron = [[0 for x in range(rows)] for y in range(columns)]
@@ -54,22 +57,32 @@ class menu(object):
                             # controlar vivas repetidas y que no se salga de rango
                             if self.control.control_ubicacion_disponible(row, column, patron):
                                 patron[row][column] = 1
-                                self.juego.paintTable(patron , rows , columns)  # print como va quedando la matriz
+                                #self.juego.paintTable(patron , rows , columns)  # print como va quedando la matriz
                                 count = count + 1
-                        self.game(rows, columns, patron)
+                        self.juego.actualTable = patron
+                        self.juego.game(rows, columns, self.juego.actualTable)
 
                 # Opcion 3
                 elif selection == '3' or selection == '03':
                     pass
                 # opcion 4
                 elif selection == '4' or selection == '04':
-                    print(self.juego.futureTable)
                     tablero = self.juego.futureTable
                     archivo = input('ingrese el nombre del archivo: ')
                     pickle.dump(tablero, open(archivo,'wb'))
+                    print(self.juego.modo)
+                    pickle.dump(self.juego.modo, open(archivo + '-modo', 'wb'))
 
                 # Salir
                 elif selection == '5' or selection == '05':
+                    archivo = input('ingrese el nombre del archivo a cargar: ')
+                    self.juego.actualTable = pickle.load(open(archivo, 'rb'))
+                    self.juego.modo = pickle.load(open(archivo + '-modo', 'rb'))
+                    print(self.juego.actualTable)
+                    input('enter')
+                    self.juego.game(10, 10, self.juego.actualTable)
+
+                elif selection == '6' or selection == '06':
                     break
                 else:
                     print(40 * '-')
