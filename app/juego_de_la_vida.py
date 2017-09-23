@@ -152,7 +152,6 @@ class juego_de_la_vida(object):
         print('----' * 10)
 
     def paintTable(self,actualTable , rows , columns):
-        print(actualTable)
         for row in range(rows):
             for col in range(columns):
 

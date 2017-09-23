@@ -3,9 +3,7 @@
 
 from juego_de_la_vida import juego_de_la_vida
 from controles import controles
-import os
-import pickle
-import time
+import os, pickle, time, json
 from random import shuffle
 
 class menu(object):
@@ -30,7 +28,6 @@ class menu(object):
                 os.system('clear')
                 for k in sorted(menu):
                     print (str(k) + ' ' + menu[k])
-                print(self.juego.started)
                 if self.juego.started or not self.juego.modo: selection = input('Elija un opción: ')
 
                 # Patron random
@@ -41,7 +38,6 @@ class menu(object):
                     table = [(x, y) for x in range(rows) for y in range(columns)]
                     shuffle(table)
                     patron = (table[:cells])
-                    print(patron)
                     self.juego.game(rows, columns, patron)
 
                 # Seleccion ubicacion de celdas
@@ -57,7 +53,7 @@ class menu(object):
                             # controlar vivas repetidas y que no se salga de rango
                             if self.control.control_ubicacion_disponible(row, column, patron):
                                 patron[row][column] = 1
-                                #self.juego.paintTable(patron , rows , columns)  # print como va quedando la matriz
+                                self.juego.paintTable(patron , rows , columns)  # print como va quedando la matriz
                                 count = count + 1
                         self.juego.actualTable = patron
                         self.juego.game(rows, columns, self.juego.actualTable)
@@ -68,21 +64,26 @@ class menu(object):
                 # opcion 4
                 elif selection == '4' or selection == '04':
                     tablero = self.juego.futureTable
-                    archivo = input('ingrese el nombre del archivo: ')
+                    archivo = input('ingrese el nombre del archivo sin extension:  ')
                     pickle.dump(tablero, open(archivo,'wb'))
-                    print(self.juego.modo)
-                    pickle.dump(self.juego.modo, open(archivo + '-modo', 'wb'))
+                    data = {}
+                    data['modo'] = self.juego.modo
+                    data['rows'] = len(tablero)
+                    data['columns'] = len(tablero[0])
+                    json.dump(data, open(archivo + '-data.json', 'w'))
+
+
+                elif selection == '5' or selection == '05':
+                    archivo = input('ingrese el nombre del archivo a cargar sin extension: ')
+                    self.juego.actualTable = pickle.load(open(archivo, 'rb'))
+                    data = json.load(open(archivo + '-data.json', 'rb'))
+                    self.juego.modo = data['modo']
+                    self.juego.game(data['rows'], data['columns'], self.juego.actualTable)
 
                 # Salir
-                elif selection == '5' or selection == '05':
-                    archivo = input('ingrese el nombre del archivo a cargar: ')
-                    self.juego.actualTable = pickle.load(open(archivo, 'rb'))
-                    self.juego.modo = pickle.load(open(archivo + '-modo', 'rb'))
-                    print(self.juego.actualTable)
-                    input('enter')
-                    self.juego.game(10, 10, self.juego.actualTable)
-
                 elif selection == '6' or selection == '06':
+                    "Gracias por jugar al juego de la vida..."
+                    time.sleep(1)
                     break
                 else:
                     print(40 * '-')
