@@ -59,10 +59,10 @@ class menu(object):
                 # Seleccion ubicacion de celdas
                 elif selection == '2' or selection == '02':
                     if self.juego.started:
-                        ans = input('Ya hay un juego empezado, si continuas se perdera. Continuar? S/N: ')
-                        if ans == 's' or ans == 'S':
+                        ans = str(input('Ya hay un juego empezado, si continuas se perdera. Continuar? S/N: '))
+                        if ans.upper() == 'S':
                             self.juego = juego_de_la_vida([])
-                        elif ans == 'N' or ans == 'n':
+                        elif ans.upper() == 'N':
                             continue
                         else:
                             print('opcion no valida, abortando...')
