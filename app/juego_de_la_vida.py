@@ -2,9 +2,9 @@ import random
 import os
 import time
 from controles import controles
+import pdb
 
 class juego_de_la_vida(object):
-
 
     def __init__(self, actualTable=[]):
         self.control = controles()
@@ -194,19 +194,19 @@ class juego_de_la_vida(object):
 
 
     def loadFutureTable(self,futureTable , rows , columns):
-
         for row in range(rows):
-            for col in range(columns):
 
-                newArray = []
-                for zeroValue in range(columns):
-                    newArray.append(0)
+            newArray = []
+            for zeroValue in range(columns):
+                newArray.append(0)
 
-                futureTable.append(newArray)
+            futureTable.append(newArray)
 
         for row in range(rows):
             for col in range(columns):
                 futureTable[row][col] = 0
+
+
 
 
 

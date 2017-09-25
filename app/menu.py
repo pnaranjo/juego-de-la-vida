@@ -5,6 +5,7 @@ from juego_de_la_vida import juego_de_la_vida
 from controles import controles
 import os, pickle, time, json
 from random import shuffle
+import pdb
 
 class menu(object):
 
@@ -32,6 +33,16 @@ class menu(object):
 
                 # Patron random
                 if selection == '1' or selection == '01':
+                    if self.juego.started:
+                        ans = input('Ya hay un juego empezado, si continuas se perdera. Continuar? S/N: ')
+                        if ans == 's' or ans == 'S':
+                            self.juego = juego_de_la_vida([])
+                        elif ans == 'N' or ans == 'n':
+                            continue
+                        else:
+                            print('opcion no valida, abortando...')
+                            time.sleep(1)
+                            continue
                     self.juego.modo = 1
                     rows, columns = self.juego.prepare_game()
                     cells = int(input('Numero de celulas vivas: '))
@@ -42,6 +53,16 @@ class menu(object):
 
                 # Seleccion ubicacion de celdas
                 elif selection == '2' or selection == '02':
+                    if self.juego.started:
+                        ans = input('Ya hay un juego empezado, si continuas se perdera. Continuar? S/N: ')
+                        if ans == 's' or ans == 'S':
+                            self.juego = juego_de_la_vida([])
+                        elif ans == 'N' or ans == 'n':
+                            continue
+                        else:
+                            print('opcion no valida, abortando...')
+                            time.sleep(1)
+                            continue
                     self.juego.modo = 2
                     rows, columns = self.juego.prepare_game()
                     cells = int(input('Numero de celulas vivas: '))
