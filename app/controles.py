@@ -5,7 +5,7 @@ class controles(object):
 
     def __init__(self):
         pass
-        
+
     def matriz_minima(self,rows, columns):
         if (int(rows) >= 3 and int(columns) >= 3):
             ''' Parametros de entrada rows, columns
@@ -17,7 +17,7 @@ class controles(object):
             print ('el minimo es 3 x 3')
             return False
 
-    
+
     def cells_max_matriz(self,cells, rows, columns):
         ''' Parametros de entrada cells, rows, columns
         Controla que la cantidad cells (celulas vivas)
@@ -30,7 +30,7 @@ class controles(object):
             return True
         else:
             return False
-    
+
     def control_ubicacion_disponible(self,row, column, patron):
         ''' Parametros de entrada row, colum, patron
         Controla que la fila y columna de un
@@ -38,7 +38,7 @@ class controles(object):
         de los limites
         Retorna True si esta dentro de la matriz
         y el casillero esta muerto
-        '''   
+        '''
         try:
             if patron[row][column] == 1:
                 print('\n***** Ubicacion invalida *****\n')
@@ -47,4 +47,13 @@ class controles(object):
                 return True
         except IndexError:
             print('\n***** Ubicacion invalida *****\n')
+            return False
+
+    def verify_input_int(self, row, col):
+        ''' asegurar que ingrese solo enteros'''
+        try:
+            r, c = int(row), int(col)
+            return True
+        except ValueError:
+            print("Ingrese solo enteros")
             return False

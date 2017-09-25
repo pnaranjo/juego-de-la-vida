@@ -20,6 +20,14 @@ class juego_de_la_vida(object):
         while True:
             rows = input("Introduce la cantidad de filas que deseas:")
             columns = input("Introduce la cantidad de columnas que deseas:")
+
+            if not self.control.verify_input_int(rows,columns):
+                not_int = True
+                while not_int:
+                    rows = input("Introduce la cantidad de filas que deseas:")
+                    columns = input("Introduce la cantidad de columnas que deseas:")
+                    not_int = not self.control.verify_input_int(rows,columns)
+
             if self.control.matriz_minima(rows,columns):
                 break
         return int(rows), int(columns)
@@ -124,22 +132,22 @@ class juego_de_la_vida(object):
             pass
 
         elif a == "m":
-            #TODO: poner control
-            col = int(input('ingrese columna a modificar: '))
             row = int(input('ingrese fila a modificar: '))
+            col = int(input('ingrese columna a modificar: '))
+            if not self.control.verify_input_int(row,col):
+                not_int = True
+                while not_int:
+                    row = input("Introduce la cantidad de filas que deseas:")
+                    col = input("Introduce la cantidad de columnas que deseas:")
+                    not_int = not self.control.verify_input_int(row,col)
             self.modify_cel(table, row, col)
-
 
         elif a == "f":
             self.modo_f = True
 
-
         else:
             print("opcion no valida")
             self.menu_secundario(table)
-
-
-
 
     def modify_cel(self, tabla, row, col):
         if tabla[row][col] == 1:

@@ -45,10 +45,15 @@ class menu(object):
                             continue
                     self.juego.modo = 1
                     rows, columns = self.juego.prepare_game()
-                    cells = int(input('Numero de celulas vivas: '))
+                    cells = input('Numero de celulas vivas: ')
+                    if not self.control.verify_input_int(cells,0):
+                        not_int = True
+                        while not_int:
+                            cells = input('Numero de celulas vivas: ')
+                            not_int = not self.control.verify_input_int(cells,0)
                     table = [(x, y) for x in range(rows) for y in range(columns)]
                     shuffle(table)
-                    patron = (table[:cells])
+                    patron = (table[:int(cells)])
                     self.juego.game(rows, columns, patron)
 
                 # Seleccion ubicacion de celdas
@@ -65,15 +70,24 @@ class menu(object):
                             continue
                     self.juego.modo = 2
                     rows, columns = self.juego.prepare_game()
-                    cells = int(input('Numero de celulas vivas: '))
-                    if not self.control.cells_max_matriz(cells, rows, columns):
+                    cells = input('Numero de celulas vivas: ')
+                    if not self.control.verify_input_int(cells,0):
+                        not_int = True
+                        while not_int:
+                            cells = input('Numero de celulas vivas: ')
+                            not_int = not self.control.verify_input_int(cells,0)
+                    if not self.control.cells_max_matriz(int(cells), rows, columns):
                         patron = [[0 for x in range(rows)] for y in range(columns)]
                         count = 0
-                        while (count < cells):
-                            row, column = (int(input('ubicacion de fila: ')) , int(input('ubicacion de columna : ')))
-                            # controlar vivas repetidas y que no se salga de rango
-                            if self.control.control_ubicacion_disponible(row, column, patron):
-                                patron[row][column] = 1
+                        while (count < int(cells)):
+                            row, column = (input('ubicacion de fila: ') , input('ubicacion de columna : '))
+                            if not self.control.verify_input_int(row,column):
+                                not_int = True
+                                while not_int:
+                                    row, column = (input('ubicacion de fila: ') , input('ubicacion de columna : '))
+                                    not_int = not self.control.verify_input_int(row,column)
+                            if self.control.control_ubicacion_disponible(int(row), int(column), patron):
+                                patron[int(row)][int(column)] = 1
                                 self.juego.paintTable(patron , rows , columns)  # print como va quedando la matriz
                                 count = count + 1
                         self.juego.actualTable = patron
@@ -82,6 +96,7 @@ class menu(object):
                 # Opcion 3
                 elif selection == '3' or selection == '03':
                     pass
+
                 # opcion 4
                 elif selection == '4' or selection == '04':
                     tablero = self.juego.futureTable
@@ -93,19 +108,24 @@ class menu(object):
                     data['columns'] = len(tablero[0])
                     json.dump(data, open(archivo + '-data.json', 'w'))
 
-
+                # Opcion 5
                 elif selection == '5' or selection == '05':
-                    archivo = input('ingrese el nombre del archivo a cargar sin extension: ')
-                    self.juego.actualTable = pickle.load(open(archivo, 'rb'))
-                    data = json.load(open(archivo + '-data.json', 'rb'))
-                    self.juego.modo = data['modo']
-                    self.juego.game(data['rows'], data['columns'], self.juego.actualTable)
-
+                    try:
+                        archivo = input('ingrese el nombre del archivo a cargar sin extension: ')
+                        self.juego.actualTable = pickle.load(open(archivo, 'rb'))
+                        data = json.load(open(archivo + '-data.json', 'rb'))
+                        self.juego.modo = data['modo']
+                        self.juego.game(data['rows'], data['columns'], self.juego.actualTable)
+                    except OSError:
+                        print('*** Archivo no encontrado ***')
+                        time.sleep(4)
                 # Salir
                 elif selection == '6' or selection == '06':
                     "Gracias por jugar al juego de la vida..."
                     time.sleep(1)
                     break
+
+                #Cualquier otro ingreso
                 else:
                     print(40 * '-')
                     print ('Opcion invalida')
@@ -115,7 +135,7 @@ class menu(object):
             except (EOFError, KeyboardInterrupt):
                     print(' ')
                     print(40 * '-')
-                    print ('Para Salir elija la opcion 05')
+                    print ('Para Salir elija la opcion 06')
                     print(40 * '-')
                     time.sleep(1)
 
