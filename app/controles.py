@@ -41,12 +41,12 @@ class controles(object):
         '''
         try:
             if patron[row][column] == 1:
-                print('\n***** Ubicacion invalida *****\n')
+                print('\n***** Ya esta viva esa celula *****\n')
                 return False
             else:
                 return True
         except IndexError:
-            print('\n***** Ubicacion invalida *****\n')
+            print('\n***** Fuera de rango *****\n')
             return False
 
     def verify_input_int(self, row, col):

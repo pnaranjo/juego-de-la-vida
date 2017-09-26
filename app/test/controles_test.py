@@ -5,8 +5,11 @@ from app.controles import controles
 
 class ControlesTests(unittest.TestCase):
 
-    def test_matriz_minima(self):
+    def test_matriz_minima_t(self):
         self.assertTrue(matriz_minima(3,3),'True')
+
+    def test_matriz_minima_f(self):
+        self.assertFalse(matriz_minima(1,3),'False')
 
     def test_cells_max_matriz(self):
         self.assertFalse(cells_max_matriz(8, 3, 3),'False')
@@ -26,7 +29,13 @@ class ControlesTests(unittest.TestCase):
     def test_ubicacion_disponible_fuera_de_limite(self):
         patron = [[0 for x in range(3)] for y in range(3)]
         self.assertFalse(control_ubicacion_disponible(5, 5, patron), 'False')
-        
+
+    def test_solo_enteros_t(self):
+        self.assertTrue(verify_input_int(10, 9),'True')
+
+    def test_solo_enteros_f(self):
+        self.assertFalse(verify_input_int(10, 'L'),'False')
+    
 def main():
     unittest.main()
 
