@@ -114,7 +114,7 @@ class menu(object):
                     try:
                         archivo = input('ingrese el nombre del archivo a cargar sin extension: ')
                         self.juego.actualTable = pickle.load(open(archivo, 'rb'))
-                        data = json.load(open(archivo + '-data.json', 'rb'))
+                        data = json.load(open(archivo + '-data.json', 'r'))
                         self.juego.modo = data['modo']
                         self.juego.modo_f = data['modo_f']
                         self.juego.game(data['rows'], data['columns'], self.juego.actualTable)
