@@ -132,15 +132,16 @@ class juego_de_la_vida(object):
             pass
 
         elif a == "m":
-            row = int(input('ingrese fila a modificar: '))
-            col = int(input('ingrese columna a modificar: '))
-            if not self.control.verify_input_int(row,col):
-                not_int = True
-                while not_int:
-                    row = input("Introduce la cantidad de filas que deseas:")
-                    col = input("Introduce la cantidad de columnas que deseas:")
-                    not_int = not self.control.verify_input_int(row,col)
-            self.modify_cel(table, row, col)
+            row = input('ingrese fila a modificar: ')
+            col = input('ingrese columna a modificar: ')
+            if not self.control.control_ubicacion_disponible(row, col, table):
+                invalid_input = True
+                while invalid_input:
+                    row = input('ingrese fila a modificar: ')
+                    col = input('ingrese columna a modificar: ')
+                    invalid_input = not self.control.control_ubicacion_disponible(row, col, table)
+                self.modify_cel(table, int(row), int(col))
+
 
         elif a == "f":
             self.modo_f = True
