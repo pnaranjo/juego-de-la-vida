@@ -99,15 +99,19 @@ class menu(object):
 
                 # opcion 4
                 elif selection == '4' or selection == '04':
-                    tablero = self.juego.futureTable
-                    archivo = input('ingrese el nombre del archivo sin extension:  ')
-                    pickle.dump(tablero, open(archivo,'wb'))
-                    data = {}
-                    data['modo'] = self.juego.modo
-                    data['modo_f'] = self.juego.modo_f
-                    data['rows'] = len(tablero)
-                    data['columns'] = len(tablero[0])
-                    json.dump(data, open(archivo + '-data.json', 'w'))
+                    if not self.juego.started:
+                        print('Debe iniciar el juego primero')
+                        time.sleep(2)
+                    else:
+                        tablero = self.juego.futureTable
+                        archivo = input('ingrese el nombre del archivo sin extension:  ')
+                        pickle.dump(tablero, open(archivo,'wb'))
+                        data = {}
+                        data['modo'] = self.juego.modo
+                        data['modo_f'] = self.juego.modo_f
+                        data['rows'] = len(tablero)
+                        data['columns'] = len(tablero[0])
+                        json.dump(data, open(archivo + '-data.json', 'w'))
 
                 # Opcion 5
                 elif selection == '5' or selection == '05':
@@ -120,7 +124,7 @@ class menu(object):
                         self.juego.game(data['rows'], data['columns'], self.juego.actualTable)
                     except OSError:
                         print('*** Archivo no encontrado ***')
-                        time.sleep(4)
+                        time.sleep(2)
                 # Salir
                 elif selection == '6' or selection == '06':
                     "Gracias por jugar al juego de la vida..."
