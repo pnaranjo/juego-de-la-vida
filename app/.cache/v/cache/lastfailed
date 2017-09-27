@@ -2,6 +2,10 @@
   "test/controles_test.py::ControlesTests::test_cells_max_matriz": true,
   "test/controles_test.py::ControlesTests::test_cells_max_matriz_f": true,
   "test/controles_test.py::ControlesTests::test_matriz_minima": true,
+  "test/controles_test.py::ControlesTests::test_matriz_minima_f": true,
+  "test/controles_test.py::ControlesTests::test_matriz_minima_t": true,
+  "test/controles_test.py::ControlesTests::test_solo_enteros_f": true,
+  "test/controles_test.py::ControlesTests::test_solo_enteros_t": true,
   "test/controles_test.py::ControlesTests::test_ubicacion_disponible": true,
   "test/controles_test.py::ControlesTests::test_ubicacion_disponible_fuera_de_limite": true,
   "test/controles_test.py::ControlesTests::test_ubicacion_disponible_repetido": true
