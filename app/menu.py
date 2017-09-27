@@ -104,6 +104,7 @@ class menu(object):
                     pickle.dump(tablero, open(archivo,'wb'))
                     data = {}
                     data['modo'] = self.juego.modo
+                    data['modo_f'] = self.juego.modo_f
                     data['rows'] = len(tablero)
                     data['columns'] = len(tablero[0])
                     json.dump(data, open(archivo + '-data.json', 'w'))
@@ -115,6 +116,7 @@ class menu(object):
                         self.juego.actualTable = pickle.load(open(archivo, 'rb'))
                         data = json.load(open(archivo + '-data.json', 'rb'))
                         self.juego.modo = data['modo']
+                        self.juego.modo_f = data['modo_f']
                         self.juego.game(data['rows'], data['columns'], self.juego.actualTable)
                     except OSError:
                         print('*** Archivo no encontrado ***')
