@@ -40,7 +40,10 @@ class controles(object):
         y el casillero esta muerto
         '''
         try:
-            if patron[row][column] == 1:
+            if not self.verify_input_int(row, column):
+                print('\n***** row y col tienen que ser entero *****\n')
+                return False
+            elif patron[int(row)][int(column)] == 1:
                 print('\n***** Ya esta viva esa celula *****\n')
                 return False
             else:
