@@ -127,18 +127,22 @@ class menu(object):
                         time.sleep(2)
                 # Salir
                 elif selection == '6' or selection == '06':
-                    "Gracias por jugar al juego de la vida..."
+                    print("Gracias por jugar al juego de la vida...")
                     time.sleep(1)
                     break
 
                 #Cualquier otro ingreso
                 else:
+
                     print(40 * '-')
                     print ('Opcion invalida')
                     print(40 * '-')
                     time.sleep(1)
 
             except (EOFError, KeyboardInterrupt):
+
+                    selection = None
+                    self.juego.modo = None
                     print(' ')
                     print(40 * '-')
                     print ('Para Salir elija la opcion 06')

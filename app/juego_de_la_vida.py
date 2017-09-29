@@ -3,6 +3,7 @@ import os
 import time
 from controles import controles
 import pdb
+import copy
 
 class juego_de_la_vida(object):
 
@@ -45,8 +46,9 @@ class juego_de_la_vida(object):
         self.checkLife(self.actualTable, self.futureTable, container, rows, columns)
 
     def checkLife(self,actualTable ,futureTable , container , rows, cols):
-
+        table2 = []
         while True:
+
             try:
                 for row in range(rows -2):
                     for col in range(cols -2):
@@ -101,22 +103,41 @@ class juego_de_la_vida(object):
                         elif cellCounter == 2:
                             self.futureTable[row +1][col + 1] = self.actualTable[row +1][col +1]
 
+                self.actualTable, self.futureTable = self.futureTable, self.actualTable
 
-                auxiliarTable = self.actualTable
-                self.actualTable = self.futureTable
-                self.futureTable = auxiliarTable
+                table1 = table2[:]
+                table2 = copy.deepcopy(self.futureTable)
 
                 os.system('clear')
                 self.paintTable(self.futureTable, rows , cols)
+
                 if not self.modo_f:
                     self.menu_secundario(self.futureTable)
-                else:
-                    time.sleep(1)
-                self.resetTable(self.futureTable, rows , cols)
+                elif self.es_estatico():
+                    input('el juego termino por encontrar un patron estatico')
+                    raise KeyboardInterrupt
+                elif self.oscila(table1):
+                      input('el juego termino por encontrar un patron oscilante nivel 2')
+                      raise KeyboardInterrupt
+                time.sleep(1)
+                self.resetFutureTable(rows , cols)
+
 
             except (EOFError, KeyboardInterrupt):
                 self.started = True
                 break
+
+    def es_estatico(self):
+        if self.actualTable == self.futureTable:
+            return True
+        else:
+            return False
+
+    def oscila(self, tabla):
+        if tabla == self.actualTable:
+            return True
+        else:
+            return False
 
     def menu_secundario(self, table):
         print ('*' * 40 )
@@ -218,7 +239,7 @@ class juego_de_la_vida(object):
 
 
 
-    def resetTable(self,table , rows , cols):
+    def resetFutureTable(self, rows , cols):
         for row in range(rows):
             for col in range(cols):
-                table[row][col] = 0
+                self.futureTable[row][col] = 0
