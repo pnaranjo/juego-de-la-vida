@@ -1,9 +1,9 @@
-import random
-import os
-import time
+import random, os, time, pdb, copy, math
+
 from controles import controles
-import pdb
-import copy
+from combination import combinations
+
+
 
 class juego_de_la_vida(object):
 
@@ -15,6 +15,7 @@ class juego_de_la_vida(object):
         self.finished = False
         self.modo = None
         self.started = False
+        self.modo_ve = False
 
 
     def prepare_game(self):
@@ -35,74 +36,19 @@ class juego_de_la_vida(object):
 
     def game(self, rows, columns, patron=None):
 
-        container = [
-                     [0,0,0],
-                     [0,0,0],
-                     [0,0,0]
-                    ]
 
-        if not self.actualTable: self.loadActualTable(self.actualTable,rows,columns, patron)
-        self.loadFutureTable(self.futureTable,rows,columns)
-        self.checkLife(self.actualTable, self.futureTable, container, rows, columns)
 
-    def checkLife(self,actualTable ,futureTable , container , rows, cols):
+        if not self.actualTable: self.loadActualTable(rows,columns, patron)
+        self.loadFutureTable(rows,columns)
+        self.checkLife(rows, columns)
+
+    def checkLife(self, rows, cols):
         table2 = []
         while True:
 
             try:
-                for row in range(rows -2):
-                    for col in range(cols -2):
 
-                        cell1 = self.actualTable[row][col]
-                        cell2 = self.actualTable[row][col + 1]
-                        cell3 = self.actualTable[row][col + 2]
-
-                        cell4 = self.actualTable[row + 1][col]
-                        cell5 = self.actualTable[row + 1][col + 1]
-                        cell6 = self.actualTable[row + 1][col + 2]
-
-                        cell7 = self.actualTable[row + 2][col]
-                        cell8 = self.actualTable[row + 2][col + 1]
-                        cell9 = self.actualTable[row + 2][col + 2]
-
-
-                        container[0][0] = cell1
-                        container[0][1] = cell2
-                        container[0][2] = cell3
-
-                        container[1][0] = cell4
-                        container[1][1] = cell5
-                        container[1][2] = cell6
-
-                        container[2][0] = cell7
-                        container[2][1] = cell8
-                        container[2][2] = cell9
-
-                        cellCounter = 0
-
-                        for rowContainer in range(3):
-                            for colContainer in range(3):
-
-                                if not (rowContainer == 1 and colContainer == 1):
-                                    if container[rowContainer][colContainer] == 1:
-                                        cellCounter = cellCounter + 1
-
-
-                        if cellCounter < 2 and container[1][1] == 1:
-                            self.futureTable[row + 1][col + 1] = 0
-
-                        elif cellCounter > 3 and container[1][1] == 1:
-                            self.futureTable[row + 1][col + 1] = 0
-
-                        elif cellCounter == 3 and container[1][1] == 0:
-                            self.futureTable[row + 1][col + 1] = 1
-
-                        elif cellCounter == 3 and container[1][1] == 1:
-                            self.futureTable[row + 1][col + 1] = 1
-
-                        elif cellCounter == 2:
-                            self.futureTable[row +1][col + 1] = self.actualTable[row +1][col +1]
-
+                self.magic(rows, cols)
                 self.actualTable, self.futureTable = self.futureTable, self.actualTable
 
                 table1 = table2[:]
@@ -111,7 +57,7 @@ class juego_de_la_vida(object):
                 os.system('clear')
                 self.paintTable(self.futureTable, rows , cols)
 
-                if not self.modo_f:
+                if not self.modo_f and not self.modo_ve:
                     self.menu_secundario(self.futureTable)
                 elif self.es_estatico():
                     input('el juego termino por encontrar un patron estatico')
@@ -126,6 +72,251 @@ class juego_de_la_vida(object):
             except (EOFError, KeyboardInterrupt):
                 self.started = True
                 break
+
+    def magic(self, rows, cols):
+        container = [
+                     [0,0,0],
+                     [0,0,0],
+                     [0,0,0]
+                    ]
+
+        self.check_corners(rows,cols)
+        self.check_extremos(rows,cols,'superior') #lateral superior
+        self.check_extremos(rows,cols,'inferior')
+        self.check_lateral(rows,cols,'derecho')
+        self.check_lateral(rows,cols,'izquierdo')
+
+        for row in range(rows -2):
+            for col in range(cols -2):
+
+                cell1 = self.actualTable[row][col]
+                cell2 = self.actualTable[row][col + 1]
+                cell3 = self.actualTable[row][col + 2]
+                cell4 = self.actualTable[row + 1][col]
+                cell5 = self.actualTable[row + 1][col + 1]
+                cell6 = self.actualTable[row + 1][col + 2]
+                cell7 = self.actualTable[row + 2][col]
+                cell8 = self.actualTable[row + 2][col + 1]
+                cell9 = self.actualTable[row + 2][col + 2]
+
+
+                container[0][0] = cell1
+                container[0][1] = cell2
+                container[0][2] = cell3
+                container[1][0] = cell4
+                container[1][1] = cell5
+                container[1][2] = cell6
+                container[2][0] = cell7
+                container[2][1] = cell8
+                container[2][2] = cell9
+
+                cellCounter = 0
+
+
+                for rowContainer in range(3):
+                    for colContainer in range(3):
+
+                        if not (rowContainer == 1 and colContainer == 1):
+                            if container[rowContainer][colContainer] == 1:
+                                cellCounter = cellCounter + 1
+
+
+                if (cellCounter < 2 or cellCounter > 3) and container[1][1] == 1:
+                    self.futureTable[row + 1][col + 1] = 0
+
+                elif cellCounter > 3 and container[1][1] == 1:
+                    self.futureTable[row + 1][col + 1] = 0
+
+                elif cellCounter == 3 and container[1][1] == 0:
+                    self.futureTable[row + 1][col + 1] = 1
+
+                elif (cellCounter == 3 or cellCounter == 2) and container[1][1] == 1:
+                    self.futureTable[row + 1][col + 1] = 1
+
+    def check_corners(self, rows, cols):
+            vivos = 0
+            #esquina [0,0]
+            if self.actualTable[0][1] == 1:
+                vivos += 1
+            if self.actualTable[1][0] == 1:
+                vivos += 1
+            if self.actualTable[1][1] == 1:
+                vivos += 1
+            if self.actualTable[0][0] == 0 and vivos == 3:
+                self.futureTable[0][0] = 1
+            if self.actualTable[0][0] == 1 and vivos >= 2:
+                self.futureTable[0][0] = 1
+
+            vivos = 0
+            #esquina [0,fin]
+            if self.actualTable[0][-2] == 1:
+                vivos += 1
+            if self.actualTable[1][-2] == 1:
+                vivos += 1
+            if self.actualTable[1][-1] == 1:
+                vivos += 1
+            if self.actualTable[0][-1] == 0 and vivos == 3:
+                self.futureTable[0][-1] = 1
+            if self.actualTable[0][-1] == 1 and vivos >= 2:
+                self.futureTable[0][-1] = 1
+
+            vivos = 0
+            #esquina [fin,0]
+            if self.actualTable[-1][1] == 1:
+                vivos += 1
+            if self.actualTable[-1][0] == 1:
+                vivos += 1
+            if self.actualTable[-1][1] == 1:
+                vivos += 1
+            if self.actualTable[-1][0] == 0 and vivos == 3:
+                self.futureTable[-1][0] = 1
+            if self.actualTable[-1][0] == 1 and vivos >= 2:
+                self.futureTable[-1][0] = 1
+
+            vivos = 0
+            #esquina [fin,fin]
+            if self.actualTable[-1][-2] == 1:
+                vivos += 1
+            if self.actualTable[-2][-1] == 1:
+                vivos += 1
+            if self.actualTable[-2][-2] == 1:
+                vivos += 1
+            if self.actualTable[-1][-1] == 0 and vivos == 3:
+                self.futureTable[-1][-1] = 1
+            if self.actualTable[-1][-1] == 1 and vivos >= 2:
+                self.futureTable[-1][-1] = 1
+
+    def check_extremos(self, rows, cols, lado):
+        container = [[0,0,0],
+                     [0,0,0]]
+
+        # lateral superior
+        if lado == 'superior':
+            rowC = 0
+            colC = 1
+            row = 0
+            rowcell1 = row
+            rowcell2 = row
+            rowcell3 = row
+            rowcell4 = row + 1
+            rowcell5 = row + 1
+            rowcell6 = row + 1
+
+
+        elif lado == 'inferior':
+            rowC = 1
+            colC = 1
+            row = -1
+            rowcell1 = row - 1
+            rowcell2 = row - 1
+            rowcell3 = row - 1
+            rowcell4 = row
+            rowcell5 = row
+            rowcell6 = row
+
+        for col in range(cols -2):
+            cell1 = self.actualTable[rowcell1][col]
+            cell2 = self.actualTable[rowcell2][col + 1]
+            cell3 = self.actualTable[rowcell3][col + 2]
+            cell4 = self.actualTable[rowcell4][col]
+            cell5 = self.actualTable[rowcell5][col + 1]
+            cell6 = self.actualTable[rowcell6][col + 2]
+
+
+            container[0][0] = cell1
+            container[0][1] = cell2
+            container[0][2] = cell3
+            container[1][0] = cell4
+            container[1][1] = cell5
+            container[1][2] = cell6
+
+            cellCounter = 0
+            for rowContainer in range(2):
+                for colContainer in range(3):
+
+                    if not (rowContainer == rowC and colContainer == colC):
+                        if container[rowContainer][colContainer] == 1:
+                            cellCounter = cellCounter + 1
+
+
+            if (cellCounter < 2 or cellCounter > 3) and container[rowC][colC] == 1:
+                self.futureTable[rowC][colC] = 0
+
+            elif cellCounter > 3 and container[rowC][colC] == 1:
+                self.futureTable[rowC][colC] = 0
+
+            elif cellCounter == 3 and container[rowC][colC] == 0:
+                self.futureTable[rowC][colC] = 1
+
+            elif (cellCounter == 3 or cellCounter == 2) and container[rowC][colC] == 1:
+                self.futureTable[rowC][colC] = 1
+
+
+
+    def check_lateral(self, rows, cols, lado):
+        container = [[0,0],
+                     [0,0],
+                     [0,0]]
+
+        if lado == 'derecho':
+            rowC = 1
+            colC = 1
+            col = -1
+            colcell1 = col - 1
+            colcell2 = col
+            colcell3 = col - 1
+            colcell4 = col
+            colcell5 = col - 1
+            colcell6 = col
+
+        elif lado == 'izquierdo':
+            rowC = 1
+            colC = 0
+            col = 0
+            colcell1 = col
+            colcell2 = col + 1
+            colcell3 = col
+            colcell4 = col + 1
+            colcell5 = col
+            colcell6 = col + 1
+
+        for row in range(rows -2):
+            cell1 = self.actualTable[row][colcell1]
+            cell2 = self.actualTable[row][colcell2]
+            cell3 = self.actualTable[row + 1][colcell3]
+            cell4 = self.actualTable[row + 1][colcell4]
+            cell5 = self.actualTable[row + 2][colcell5]
+            cell6 = self.actualTable[row + 2][colcell6]
+
+
+            container[0][0] = cell1
+            container[0][1] = cell2
+            container[1][0] = cell3
+            container[1][1] = cell4
+            container[2][0] = cell5
+            container[2][1] = cell6
+
+            cellCounter = 0
+            for rowContainer in range(3):
+                for colContainer in range(2):
+
+                    if not (rowContainer == rowC and colContainer == colC):
+                        if container[rowContainer][colContainer] == 1:
+                            cellCounter = cellCounter + 1
+
+
+            if (cellCounter < 2 or cellCounter > 3) and container[rowC][colC] == 1:
+                self.futureTable[rowC][colC] = 0
+
+            elif cellCounter > 3 and container[rowC][colC] == 1:
+                self.futureTable[rowC][colC] = 0
+
+            elif cellCounter == 3 and container[rowC][colC] == 0:
+                self.futureTable[rowC][colC] = 1
+
+            elif (cellCounter == 3 or cellCounter == 2) and container[rowC][colC] == 1:
+                self.futureTable[rowC][colC] = 1
+
 
     def es_estatico(self):
         if self.actualTable == self.futureTable:
@@ -198,7 +389,7 @@ class juego_de_la_vida(object):
 
 
 
-    def loadActualTable(self,actualTable , rows , columns, patronArray=None):
+    def loadActualTable(self, rows , columns, patronArray=None):
 
         for row in range(rows):
             for col in range(columns):
@@ -206,13 +397,13 @@ class juego_de_la_vida(object):
                 newArray = []
                 for zeroValue in range(columns):
                     newArray.append(0)
-            actualTable.append(newArray)
+            self.actualTable.append(newArray)
 
         if patronArray:
             for i in patronArray:
                 row=i[0]
                 col=i[1]
-                actualTable[row][col] = 1
+                self.actualTable[row][col] = 1
 
         else:
             for row in range(rows):
@@ -220,21 +411,21 @@ class juego_de_la_vida(object):
                     value = random.randint(0,1)
 
                     if value == 1:
-                        actualTable[row][col] = 1
+                        self.actualTable[row][col] = 1
 
 
-    def loadFutureTable(self,futureTable , rows , columns):
+    def loadFutureTable(self, rows , columns):
         for row in range(rows):
 
             newArray = []
             for zeroValue in range(columns):
                 newArray.append(0)
 
-            futureTable.append(newArray)
+            self.futureTable.append(newArray)
 
         for row in range(rows):
             for col in range(columns):
-                futureTable[row][col] = 0
+                self.futureTable[row][col] = 0
 
 
 
@@ -244,3 +435,40 @@ class juego_de_la_vida(object):
         for row in range(rows):
             for col in range(cols):
                 self.futureTable[row][col] = 0
+
+    def resetActualTable(self, rows , cols):
+        for row in range(rows):
+            for col in range(cols):
+                self.actualTable[row][col] = 0
+
+    def vidas_estaticas(self, rows, cols, cells):
+        self.modo_ve = True
+        while True:
+            try:
+                cantidad = 0
+                contador_estatico = 0
+                for x in combinations(range(rows*cols),cells):
+                    patron = []
+
+                    for y in range(cells):
+                        fila = math.floor((x[y] / rows))
+                        columna = x[y] % rows
+                        patron.append((fila,columna))
+
+
+                    self.loadActualTable(rows,cols, patron)
+                    self.loadFutureTable(rows,cols)
+                    self.magic(rows, cols)
+                    if self.es_estatico():
+                       self.paintTable(self.actualTable, rows, cols)
+                       contador_estatico = contador_estatico + 1
+                    self.actualTable = []
+                    self.futureTable = []
+                    cantidad += 1
+                print('Se encontraron ' + str(contador_estatico) + ' vidas estaticas entre ' + str(cantidad) + ' combinaciones.')
+                time.sleep(2)
+                break
+            except (ValueError):
+                print ('          Error: Ingrese un valor')
+            except datosIngresadosIncorrectos as e1:
+                print ('          Error:', e1)

@@ -95,7 +95,19 @@ class menu(object):
 
                 # Opcion 3
                 elif selection == '3' or selection == '03':
-                    pass
+                    if self.juego.started:
+                        ans = str(input('Ya hay un juego empezado, si continuas se perdera. Continuar? S/N: '))
+                        if ans.upper() == 'S':
+                            self.juego = juego_de_la_vida([])
+                        elif ans.upper() == 'N':
+                            continue
+                        else:
+                            print('opcion no valida, abortando...')
+                            time.sleep(1)
+                            continue
+                    rows, columns = self.juego.prepare_game()
+                    cells = input('Numero de celulas vivas: ')
+                    self.juego.vidas_estaticas(rows, columns, int(cells))
 
                 # opcion 4
                 elif selection == '4' or selection == '04':
