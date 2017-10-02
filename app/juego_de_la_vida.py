@@ -202,7 +202,6 @@ class juego_de_la_vida(object):
             rowcell5 = row + 1
             rowcell6 = row + 1
 
-
         elif lado == 'inferior':
             rowC = 1
             colC = 1
@@ -240,16 +239,16 @@ class juego_de_la_vida(object):
 
 
             if (cellCounter < 2 or cellCounter > 3) and container[rowC][colC] == 1:
-                self.futureTable[rowC][colC] = 0
+                self.futureTable[row][col + colC] = 0
 
             elif cellCounter > 3 and container[rowC][colC] == 1:
-                self.futureTable[rowC][colC] = 0
+                self.futureTable[row][col + colC] = 0
 
             elif cellCounter == 3 and container[rowC][colC] == 0:
-                self.futureTable[rowC][colC] = 1
+                self.futureTable[row][col + colC] = 1
 
             elif (cellCounter == 3 or cellCounter == 2) and container[rowC][colC] == 1:
-                self.futureTable[rowC][colC] = 1
+                self.futureTable[row][col + colC] = 1
 
 
 
@@ -306,16 +305,16 @@ class juego_de_la_vida(object):
 
 
             if (cellCounter < 2 or cellCounter > 3) and container[rowC][colC] == 1:
-                self.futureTable[rowC][colC] = 0
+                self.futureTable[row + rowC][col] = 0
 
             elif cellCounter > 3 and container[rowC][colC] == 1:
-                self.futureTable[rowC][colC] = 0
+                self.futureTable[row + rowC][col] = 0
 
             elif cellCounter == 3 and container[rowC][colC] == 0:
-                self.futureTable[rowC][colC] = 1
+                self.futureTable[row + rowC][col] = 1
 
             elif (cellCounter == 3 or cellCounter == 2) and container[rowC][colC] == 1:
-                self.futureTable[rowC][colC] = 1
+                self.futureTable[row + rowC][col] = 1
 
 
     def es_estatico(self):
@@ -465,10 +464,10 @@ class juego_de_la_vida(object):
                     self.actualTable = []
                     self.futureTable = []
                     cantidad += 1
-                print('Se encontraron ' + str(contador_estatico) + ' vidas estaticas entre ' + str(cantidad) + ' combinaciones.')
-                time.sleep(2)
+                print('Vidas estaticas: ' + str(contador_estatico))
+                print('Combinaciones posibles: ' + str(cantidad))
+                input()
                 break
-            except (ValueError):
-                print ('          Error: Ingrese un valor')
-            except datosIngresadosIncorrectos as e1:
-                print ('          Error:', e1)
+            except (KeyboardInterrupt):
+                break
+        self.modo_ve = False
