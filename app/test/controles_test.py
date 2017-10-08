@@ -15,10 +15,6 @@ class ControlesTests(unittest.TestCase):
     def test_cells_max_matriz(self):
         self.assertFalse(self.control.cells_max_matriz(8, 3, 3),'False')
 
-    #Arreglarlo espera un input    
-    #def test_cells_max_matriz_f(self):
-    #   self.assertTrue(self.control.cells_max_matriz(10, 3, 3), 'True')
-
     def test_ubicacion_disponible(self):
         patron = [[0 for x in range(3)] for y in range(3)]
         self.assertTrue(self.control.control_ubicacion_disponible(1, 1, patron), 'True')
