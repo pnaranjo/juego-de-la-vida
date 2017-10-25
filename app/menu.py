@@ -29,7 +29,13 @@ class menu(object):
                 os.system('clear')
                 for k in sorted(menu):
                     print (str(k) + ' ' + menu[k])
-                if self.juego.started or not self.juego.modo: selection = input('Elija un opción: ')
+                pdb.set_trace()
+                if self.juego.started or not self.juego.modo:
+                    selection = input('Elija un opción: ')
+                else:
+                    selection = self.juego.modo
+
+
 
                 # Patron random
                 if selection == '1' or selection == '01':
@@ -95,6 +101,7 @@ class menu(object):
 
                 # Opcion 3
                 elif selection == '3' or selection == '03':
+                    self.juego.modo = 3
                     if self.juego.started:
                         ans = str(input('Ya hay un juego empezado, si continuas se perdera. Continuar? S/N: '))
                         if ans.upper() == 'S':
@@ -120,6 +127,12 @@ class menu(object):
                         pickle.dump(tablero, open(archivo,'wb'))
                         data = {}
                         data['modo'] = self.juego.modo
+                        if self.juego.modo == 3:
+                            data['cells'] = cells
+                            data['contador_estatico'] = self.juego.contador_estatico
+                            data['cantidad'] = self.juego.cantidad
+                            pickle.dump(list(self.juego.iter_list_x), open(archivo + '-vex', 'wb'))
+                            pickle.dump(list(self.juego.iter_list_y), open(archivo + '-vey', 'wb'))
                         data['modo_f'] = self.juego.modo_f
                         data['rows'] = len(tablero)
                         data['columns'] = len(tablero[0])
@@ -133,7 +146,12 @@ class menu(object):
                         data = json.load(open(archivo + '-data.json', 'r'))
                         self.juego.modo = data['modo']
                         self.juego.modo_f = data['modo_f']
-                        self.juego.game(data['rows'], data['columns'], self.juego.actualTable)
+                        if self.juego.modo == 3:
+                            self.juego.iter_list_x = pickle.load(open(archivo + '-vex', 'rb'))
+                            self.juego.iter_list_y = pickle.load(open(archivo + '-vey', 'rb'))
+                            self.juego.vidas_estaticas(data['rows'], data['columns'], data['cells'], data['cantidad'], data['contador_estatico'])
+                        else:
+                            self.juego.game(data['rows'], data['columns'], self.juego.actualTable)
                     except OSError:
                         print('*** Archivo no encontrado ***')
                         time.sleep(2)

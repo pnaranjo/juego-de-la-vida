@@ -16,6 +16,8 @@ class juego_de_la_vida(object):
         self.modo = None
         self.started = False
         self.modo_ve = False
+        self.iter_list_x = []
+        self.iter_list_y = []
 
 
     def prepare_game(self):
@@ -164,9 +166,9 @@ class juego_de_la_vida(object):
             #esquina [fin,0]
             if self.actualTable[-1][1] == 1:
                 vivos += 1
-            if self.actualTable[-1][0] == 1:
+            if self.actualTable[-2][0] == 1:
                 vivos += 1
-            if self.actualTable[-1][1] == 1:
+            if self.actualTable[-2][1] == 1:
                 vivos += 1
             if self.actualTable[-1][0] == 0 and vivos == 3:
                 self.futureTable[-1][0] = 1
@@ -376,10 +378,10 @@ class juego_de_la_vida(object):
             for col in range(columns):
 
                 if actualTable[row][col] == 1:
-                    print ("|* " , end='')
+                    print (" * " , end='')
 
                 else:
-                    print ("|- "  , end='')
+                    print (" - "  , end='')
 
                 if col == columns -1: print('')
         self.printLine()
@@ -440,16 +442,17 @@ class juego_de_la_vida(object):
             for col in range(cols):
                 self.actualTable[row][col] = 0
 
-    def vidas_estaticas(self, rows, cols, cells):
+    def vidas_estaticas(self, rows, cols, cells, cantidad=0, contador_estatico=0):
         self.modo_ve = True
         while True:
             try:
-                cantidad = 0
-                contador_estatico = 0
-                for x in combinations(range(rows*cols),cells):
+                if not self.iter_list_x: self.iter_list_x = iter(combinations(range(rows*cols),cells))
+                for x in self.iter_list_x:
+                    cantidad += 1
                     patron = []
 
-                    for y in range(cells):
+                    if not self.iter_list_y: self.iter_list_y = range(cells)
+                    for y in self.iter_list_y:
                         fila = math.floor((x[y] / rows))
                         columna = x[y] % rows
                         patron.append((fila,columna))
@@ -463,11 +466,16 @@ class juego_de_la_vida(object):
                        contador_estatico = contador_estatico + 1
                     self.actualTable = []
                     self.futureTable = []
-                    cantidad += 1
+
                 print('Vidas estaticas: ' + str(contador_estatico))
                 print('Combinaciones posibles: ' + str(cantidad))
+                self.modo_ve = False
+                self.modo = None
                 input()
                 break
             except (KeyboardInterrupt):
+                self.cantidad = cantidad
+                self.contador_estatico = contador_estatico
+                self.started = True
                 break
         self.modo_ve = False
