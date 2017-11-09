@@ -5,7 +5,6 @@ from juego_de_la_vida import juego_de_la_vida
 from controles import controles
 import os, pickle, time, json
 from random import shuffle
-import pdb
 
 class menu(object):
 

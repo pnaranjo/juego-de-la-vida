@@ -469,11 +469,15 @@ class juego_de_la_vida(object):
 
                 print('Vidas estaticas: ' + str(contador_estatico))
                 print('Combinaciones posibles: ' + str(cantidad))
+                input()
                 self.modo_ve = False
                 self.modo = None
-                input()
+                self.started = False
                 break
             except (KeyboardInterrupt):
+                if not self.actualTable or not self.futureTable:
+                    self.loadActualTable(rows,cols, patron)
+                    self.loadFutureTable(rows,cols)
                 self.cantidad = cantidad
                 self.contador_estatico = contador_estatico
                 self.started = True
