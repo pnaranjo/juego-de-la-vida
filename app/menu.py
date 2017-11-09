@@ -29,7 +29,6 @@ class menu(object):
                 os.system('clear')
                 for k in sorted(menu):
                     print (str(k) + ' ' + menu[k])
-                pdb.set_trace()
                 if self.juego.started or not self.juego.modo:
                     selection = input('Elija un opción: ')
                 else:
