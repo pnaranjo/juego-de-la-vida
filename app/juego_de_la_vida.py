@@ -473,6 +473,8 @@ class juego_de_la_vida(object):
                 self.modo_ve = False
                 self.modo = None
                 self.started = False
+                self.iter_list_x = []
+                self.iter_list_y = []
                 break
             except (KeyboardInterrupt):
                 if not self.actualTable or not self.futureTable:
