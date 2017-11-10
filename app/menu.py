@@ -104,7 +104,8 @@ class menu(object):
                     if self.juego.started:
                         ans = str(input('Ya hay un juego empezado, si continuas se perdera. Continuar? S/N: '))
                         if ans.upper() == 'S':
-                            self.juego = juego_de_la_vida([])
+                            self.juego = juego_de_la_vida()
+                            self.juego.modo = 3
                         elif ans.upper() == 'N':
                             continue
                         else:

@@ -446,11 +446,10 @@ class juego_de_la_vida(object):
         self.modo_ve = True
         while True:
             try:
-                if not self.iter_list_x: self.iter_list_x = iter(combinations(range(rows*cols),cells))
+                if not self.iter_list_x: self.iter_list_x = iter(combinations(range(rows*cols),int(cells)))
                 for x in self.iter_list_x:
                     cantidad += 1
                     patron = []
-
                     if not self.iter_list_y: self.iter_list_y = range(cells)
                     for y in self.iter_list_y:
                         fila = math.floor((x[y] / rows))
